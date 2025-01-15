@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, ListItem, ListItemText } from '@material-ui/core';
+import { List, ListItem, ListItemText } from 'digitinary-ui';
 
 const RightMenu: React.FC = () => {
   const guideTypes = ['Type 1', 'Type 2', 'Type 3'];
