@@ -1,17 +1,28 @@
 import React from 'react';
-import { List, ListItem, ListItemText } from 'digitinary-ui';
+import { List, ListItem, ListItemText, ListItemIcon, Typography, ListItemButton } from '@mui/material';
 
-const LeftMenu: React.FC = () => {
-  const guides = ['Guide 1', 'Guide 2', 'Guide 3'];
+interface LeftMenuProps {
+  onSelectGuide: (guide: 'Front end' | 'Project Management' | 'UI/UX' | 'Development' | 'Finance & Administration') => void;
+  guides: { name: string; icon: JSX.Element }[];
+}
 
+const LeftMenu: React.FC<LeftMenuProps> = ({ onSelectGuide, guides }) => {
   return (
-    <List>
-      {guides.map((guide, index) => (
-        <ListItem button key={index}>
-          <ListItemText primary={guide} />
-        </ListItem>
-      ))}
-    </List>
+    <div>
+      <Typography variant="h6" gutterBottom>
+      Department
+      </Typography>
+      <List>
+        {guides.map((guide, index) => (
+          <ListItem key={index} component="li">
+            <ListItemButton onClick={() => onSelectGuide(guide.name as 'Front end' | 'Project Management' | 'UI/UX' | 'Development' | 'Finance & Administration')}>
+              <ListItemIcon>{guide.icon}</ListItemIcon>
+              <ListItemText primary={guide.name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </div>
   );
 };
 
