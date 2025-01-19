@@ -1,25 +1,24 @@
 import React from 'react';
+import { Typography } from '@mui/material';
 import '../styles/Navbar.scss';
 
 interface NavbarProps {
+  onToggleSidebar: () => void;
   onLogoClick: () => void;
-  onSearch: (query: string) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ onLogoClick, onSearch }) => {
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onSearch(event.target.value);
-  };
-
+const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, onLogoClick }) => {
   return (
-    <nav className="navbar">
+    <div className="navbar">
+      <div className="hamburger-menu" onClick={onToggleSidebar}>
+        <div className="bar"></div>
+        <div className="bar"></div>
+        <div className="bar"></div>
+      </div>
       <div className="logo" onClick={onLogoClick}>
         <img src="https://digitinary.com/wp-content/uploads/2024/04/Digitinary-Logo.png" alt="Logo" />
       </div>
-      <div className="search-bar">
-        <input type="text" placeholder="Search..." onChange={handleSearchChange} />
-      </div>
-    </nav>
+    </div>
   );
 };
 
