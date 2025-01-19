@@ -12,6 +12,21 @@
   flex-direction: column;
   justify-content: space-between;
   box-sizing: border-box;
+  .stepper-header {
+    margin-bottom: 24px;
+    text-align: left;
+
+    .guide-name {
+      color: #003366; // Digitinary blue
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .guide-type {
+      color: #666;
+      margin-bottom: 8px;
+    }
+  }
 }
 
 .step-content {
