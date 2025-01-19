@@ -1,19 +1,20 @@
+// src/pages/GuidePage.tsx
 import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
-import LeftMenu from '../components/LeftMenu';
-import RightMenu from '../components/RightMenu';
-import StepperComponent from '../components/StepperComponent';
 import { Typography } from '@mui/material';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { guides } from '../components/Types'; // Ensure this import is correct
+import SideMenu from '../components/SideMenu';
+import StepperComponent from '../components/StepperComponent';
+import Navbar from '../components/Navbar';
+import { guides, stepsData } from '../components/Types'; // Import stepsData
+import { StepperProvider } from '../components/StepperContext';
 import '../styles/GuidePage.scss';
 
 const GuidePage: React.FC = () => {
   const [selectedGuide, setSelectedGuide] = useState<'Front end' | 'Project Management' | 'UI/UX' | 'Development' | 'Finance & Administration' | null>(null);
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
 
-  const handleSelectGuide = (guide: 'Front end' | 'Project Management' | 'UI/UX' | 'Development' | 'Finance & Administration') => {
+  const handleSelectGuide = (guide: 'Front end' | 'Project Management' | 'UI/UX' | 'Development' | 'Finance & Administration' | null) => {
     setSelectedGuide(guide);
     setSelectedType(null); // Reset selected type when a new guide is selected
   };
@@ -31,38 +32,60 @@ const GuidePage: React.FC = () => {
     setSearchQuery(query);
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleNextGuide = () => {
+    if (selectedType) {
+      const types = Object.keys(stepsData);
+      const currentIndex = types.findIndex(type => type === selectedType);
+      if (currentIndex < types.length - 1) {
+        setSelectedType(types[currentIndex + 1]);
+      } else {
+        const currentGuideIndex = guides.findIndex(guide => guide.name === selectedGuide);
+        if (currentGuideIndex < guides.length - 1) {
+          setSelectedGuide(guides[currentGuideIndex + 1].name as 'Front end' | 'Project Management' | 'UI/UX' | 'Development' | 'Finance & Administration');
+          setSelectedType(null);
+        } else {
+          setSelectedGuide(null);
+          setSelectedType(null);
+        }
+      }
+    }
+  };
+
   const filteredGuides = guides.filter(guide => guide.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
-    <div className="container">
-      <Navbar onLogoClick={handleLogoClick} onSearch={handleSearch} />
-      <div className="content">
-        <div className="left-menu">
-          <LeftMenu onSelectGuide={handleSelectGuide} guides={filteredGuides} />
-        </div>
-        <div className="stepper-container">
-          <TransitionGroup>
-            {selectedType ? (
-              <CSSTransition key="stepper" timeout={300} classNames="fade">
-                <StepperComponent type={selectedType} />
-              </CSSTransition>
-            ) : (
-              <CSSTransition key="welcome" timeout={300} classNames="fade">
+    <StepperProvider>
+      <div className="container">
+        <Navbar onToggleSidebar={toggleSidebar} onLogoClick={handleLogoClick} />
+        <div className="content-wrapper">
+          <div className={`sidebar-container ${isSidebarOpen ? 'open' : 'closed'}`}>
+            <SideMenu
+              onSelectGuide={handleSelectGuide}
+              onSelectType={handleSelectType}
+              guides={filteredGuides}
+              selectedGuide={selectedGuide}
+              selectedType={selectedType}
+            />
+          </div>
+          <div className={`content ${isSidebarOpen ? 'shifted' : ''}`}>
+            <div className="stepper-container">
+              {!selectedType ? (
                 <div className="welcome-page">
                   <Typography variant="h4">Welcome to the Guide</Typography>
                   <Typography>Select a guide from the left menu to get started.</Typography>
                 </div>
-              </CSSTransition>
-            )}
-          </TransitionGroup>
-        </div>
-        <div className="right-menu">
-          {selectedGuide && (
-            <RightMenu guide={selectedGuide} onSelectType={handleSelectType} activeType={selectedType || ''} />
-          )}
+              ) : (
+                <StepperComponent type={selectedType} onNextGuide={handleNextGuide} />
+              )}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </StepperProvider>
   );
 };
 

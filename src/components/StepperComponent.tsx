@@ -1,42 +1,56 @@
-import React, { useState } from 'react';
-import { Stepper, Step, StepLabel, Button, Typography } from '@mui/material';
+// src/components/StepperComponent.tsx
+import React, { useEffect, useRef } from 'react';
+import { Stepper, Step, StepLabel, Button } from '@mui/material';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 import { StepperComponentProps, stepsData } from './Types';
+import { useStepper } from './StepperContext';
+import '../styles/StepperComponent.scss';
 
-const StepperComponent: React.FC<StepperComponentProps> = ({ type }) => {
+const StepperComponent: React.FC<StepperComponentProps> = ({ type, onNextGuide }) => {
   const steps = stepsData[type] || [];
-  const [stepState, setStepState] = useState<{ [key: string]: { currentStep: number; completedSteps: number[] } }>({
-    'Type 1.1': { currentStep: 0, completedSteps: [] },
-    'Type 1.2': { currentStep: 0, completedSteps: [] },
-    'Type 1.3': { currentStep: 0, completedSteps: [] },
-    'Type 1.2.1': { currentStep: 0, completedSteps: [] },
-    'Type 1.2.2': { currentStep: 0, completedSteps: [] },
-  });
+  const { currentStep, completedSteps, setCurrentStep, setCompletedSteps } = useStepper(type);
+  const [animationClass, setAnimationClass] = React.useState('slide-in');
+  const stepperContainerRef = useRef<HTMLDivElement>(null);
 
-  const currentStep = stepState[type]?.currentStep || 0;
-  const completedSteps = stepState[type]?.completedSteps || [];
+  useEffect(() => {
+    if (animationClass === 'slide-out') {
+      const timer = setTimeout(() => {
+        setAnimationClass('slide-in');
+        if (stepperContainerRef.current) {
+          stepperContainerRef.current.scrollTop = 0;
+        }
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [animationClass]);
 
   const handleNext = () => {
-    setStepState((prevState) => ({
-      ...prevState,
-      [type]: {
-        currentStep: prevState[type].currentStep + 1,
-        completedSteps: [...prevState[type].completedSteps, prevState[type].currentStep],
-      },
-    }));
+    if (currentStep === steps.length - 1) {
+      onNextGuide();
+    } else {
+      setAnimationClass('slide-out');
+      setTimeout(() => {
+        setCurrentStep(currentStep + 1);
+        setCompletedSteps([...completedSteps, currentStep]);
+      }, 500);
+    }
   };
 
   const handleBack = () => {
-    setStepState((prevState) => ({
-      ...prevState,
-      [type]: {
-        currentStep: prevState[type].currentStep - 1,
-        completedSteps: prevState[type].completedSteps.filter(step => step !== prevState[type].currentStep - 1),
-      },
-    }));
+    setAnimationClass('slide-out');
+    setTimeout(() => {
+      setCurrentStep(currentStep - 1);
+      setCompletedSteps(completedSteps.filter(step => step !== currentStep - 1));
+    }, 500);
   };
 
+  if (!steps || steps.length === 0) {
+    return <div>No steps available</div>;
+  }
+
   return (
-    <div className="stepper-container">
+    <div className="stepper-container animate-stepper" ref={stepperContainerRef}>
       <Stepper activeStep={currentStep} orientation="horizontal">
         {steps.map((step, index) => (
           <Step key={index} completed={completedSteps.includes(index)}>
@@ -44,15 +58,17 @@ const StepperComponent: React.FC<StepperComponentProps> = ({ type }) => {
           </Step>
         ))}
       </Stepper>
-      <div className="step-description">
-        <Typography>{steps[currentStep]?.description}</Typography>
+      <div className={`step-content ${animationClass}`}>
+        <div className="step-description">
+          <ReactMarkdown rehypePlugins={[rehypeRaw]}>{steps[currentStep]?.description}</ReactMarkdown>
+        </div>
       </div>
       <div className="stepper-buttons">
         <Button disabled={currentStep === 0} onClick={handleBack}>
           Back
         </Button>
-        <Button disabled={currentStep === steps.length - 1} onClick={handleNext}>
-          Next
+        <Button onClick={handleNext}>
+          {currentStep === steps.length - 1 ? 'Next Guide' : 'Next'}
         </Button>
       </div>
     </div>

@@ -1,0 +1,85 @@
+@use 'sass:color';
+
+.stepper-container {
+  width: 100%;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 20px;
+  overflow: hidden; /* Ensure content does not overflow */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.step-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%; /* Ensure the content takes the full width of the container */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+.slide-in {
+  animation-name: slideIn;
+}
+
+.slide-out {
+  animation-name: slideOut;
+}
+
+.step-description {
+  flex: 1; /* Allow the description to take all available space */
+  width: 100%;
+  max-width: 800px; /* Set a maximum width for the description area */
+  margin-bottom: 20px;
+  overflow-wrap: break-word; /* Ensure long words break to the next line */
+  word-wrap: break-word; /* Ensure long words break to the next line */
+  word-break: break-word; /* Ensure long words break to the next line */
+  white-space: pre-wrap; /* Ensure text wraps to the next line */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  color: #333;
+}
+
+.stepper-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.stepper-buttons button {
+  transition: transform 0.2s ease-in-out;
+}
+
+.stepper-buttons button:active {
+  transform: scale(0.95);
+}
