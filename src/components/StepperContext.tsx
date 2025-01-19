@@ -1,4 +1,3 @@
-// src/context/StepperContext.tsx
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface StepperState {

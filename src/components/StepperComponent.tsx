@@ -1,17 +1,26 @@
-// src/components/StepperComponent.tsx
 import React, { useEffect, useRef } from 'react';
-import { Stepper, Step, StepLabel, Button } from '@mui/material';
+import { Stepper, Step, StepLabel, Button, Typography, Box, Divider } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
-import { StepperComponentProps, stepsData } from './Types';
+import { StepperComponentProps, stepsData, menuItems } from './Types';
 import { useStepper } from './StepperContext';
 import '../styles/StepperComponent.scss';
 
-const StepperComponent: React.FC<StepperComponentProps> = ({ type, onNextGuide }) => {
+
+const StepperComponent: React.FC<StepperComponentProps> = ({ 
+  type, 
+  onNextGuide,
+  guideName 
+}) => {
   const steps = stepsData[type] || [];
   const { currentStep, completedSteps, setCurrentStep, setCompletedSteps } = useStepper(type);
   const [animationClass, setAnimationClass] = React.useState('slide-in');
   const stepperContainerRef = useRef<HTMLDivElement>(null);
+
+  // Find the current guide type label
+  const currentGuideType = Object.values(menuItems)
+    .flat()
+    .find(item => item.type === type)?.label || type;
 
   useEffect(() => {
     if (animationClass === 'slide-out') {
@@ -51,6 +60,16 @@ const StepperComponent: React.FC<StepperComponentProps> = ({ type, onNextGuide }
 
   return (
     <div className="stepper-container animate-stepper" ref={stepperContainerRef}>
+      <Box className="stepper-header">
+        <Typography variant="h5" className="guide-name">
+          {guideName || 'Guide'}
+        </Typography>
+        <Typography variant="subtitle1" className="guide-type">
+          {currentGuideType}
+        </Typography>
+        <Divider style={{ margin: '16px 0' }} />
+      </Box>
+
       <Stepper activeStep={currentStep} orientation="horizontal">
         {steps.map((step, index) => (
           <Step key={index} completed={completedSteps.includes(index)}>
@@ -68,7 +87,7 @@ const StepperComponent: React.FC<StepperComponentProps> = ({ type, onNextGuide }
           Back
         </Button>
         <Button onClick={handleNext}>
-          {currentStep === steps.length - 1 ? 'Next Guide' : 'Next'}
+          {currentStep === steps.length - 1 ? 'Take Quiz' : 'Next'}
         </Button>
       </div>
     </div>

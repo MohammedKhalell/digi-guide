@@ -1,0 +1,121 @@
+.quiz-container {
+    width: 800px; 
+    min-height: 500px; 
+    max-height: 80vh; 
+    margin: 2rem auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+    .MuiTypography-h5 {
+      color: #003366;
+      margin-bottom: 1.5rem;
+    }
+  
+    .MuiTypography-body1 {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+  
+    .MuiFormControl-root {
+      margin: 1.5rem 0;
+      
+      .MuiFormControlLabel-root {
+        margin-bottom: 1rem;
+        
+        .MuiRadio-root {
+          color: #003366;
+          
+          &.Mui-checked {
+            color: #003366;
+          }
+        }
+        
+        .MuiTypography-body1 {
+          margin-bottom: 0;
+        }
+      }
+    }
+  
+    .MuiAlert-root {
+      margin: 1rem 0;
+    }
+  
+    .quiz-results {
+      text-align: center;
+      padding: 2rem;
+  
+      .MuiTypography-h4 {
+        color: #003366;
+        margin-bottom: 1.5rem;
+      }
+  
+      .MuiTypography-h5 {
+        color: #666;
+        margin-bottom: 1rem;
+      }
+  
+      .MuiButton-root {
+        margin-top: 2rem;
+      }
+    }
+  
+    // Center the quiz container
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  
+    // Add scrollbar styling
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+  
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background: #003366;
+      border-radius: 4px;
+    }
+  
+    &::-webkit-scrollbar-thumb:hover {
+      background: #002244;
+    }
+  }
+  
+  .quiz-results {
+    .MuiAlert-root {
+      margin: 1.5rem 0;
+    }
+  
+    .MuiButton-root {
+      min-width: 150px;
+      margin: 0 0.5rem;
+    }
+  }
+  
+
+  @media (max-width: 900px) {
+    .quiz-container {
+      width: 90%;
+      margin: 1rem auto;
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .quiz-container {
+      width: 95%;
+      padding: 1rem;
+    }
+  }
