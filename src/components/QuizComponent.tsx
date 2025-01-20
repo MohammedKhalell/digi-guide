@@ -7,8 +7,8 @@ import {
   FormControlLabel,
   FormControl,
   Paper,
-  Alert,
   Box,
+  Alert,
 } from "@mui/material";
 import { QuizComponentProps } from "./Types";
 import { quizData } from "./Types";
@@ -26,27 +26,23 @@ const QuizComponent: React.FC<QuizComponentProps> = ({
     new Array(questions.length).fill("")
   );
   const [showResults, setShowResults] = useState(false);
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
 
   const handleAnswerSelect = (answer: string) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = answer;
     setAnswers(newAnswers);
-    setShowFeedback(false);
   };
 
   const checkAnswer = () => {
     const currentAnswer = answers[currentQuestion];
     const isAnswerCorrect =
       currentAnswer === questions[currentQuestion].correctAnswer;
-    setIsCorrect(isAnswerCorrect);
-    setShowFeedback(true);
 
     if (isAnswerCorrect) {
       setCorrectAnswersCount((prev) => prev + 1);
     }
+
     // Move to next question after delay, regardless of correct/incorrect
     setTimeout(() => {
       if (currentQuestion === questions.length - 1) {
@@ -55,19 +51,19 @@ const QuizComponent: React.FC<QuizComponentProps> = ({
       } else {
         // Move to next question
         setCurrentQuestion(currentQuestion + 1);
-        setShowFeedback(false);
       }
-    }, 1500);
+    }, );
   };
- if (!questions || questions.length === 0) {
+
+  if (!questions || questions.length === 0) {
     return (
       <Paper className="quiz-container">
         <Typography variant="h5" color="error">
           No questions available for this section.
         </Typography>
-        <Button 
-          variant="contained" 
-          color="primary" 
+        <Button
+          variant="contained"
+          color="primary"
           onClick={onBackToGuide}
           style={{ marginTop: '20px' }}
         >
@@ -76,6 +72,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({
       </Paper>
     );
   }
+
   if (showResults) {
     const finalScore = Math.min(
       (correctAnswersCount / questions.length) * 100,
@@ -109,7 +106,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({
           ) : (
             <>
               <Alert severity="error" style={{ margin: "1rem 0" }}>
-                Please try again to achieve a passing score of 70% or higher.
+                You need to get 70% or higher to pass. Please try again.
               </Alert>
               <Box mt={3} display="flex" gap={2} justifyContent="center">
                 <Button
@@ -119,7 +116,6 @@ const QuizComponent: React.FC<QuizComponentProps> = ({
                     setCurrentQuestion(0);
                     setAnswers(new Array(questions.length).fill(""));
                     setShowResults(false);
-                    setShowFeedback(false);
                     setCorrectAnswersCount(0);
                   }}
                 >
@@ -141,7 +137,7 @@ const QuizComponent: React.FC<QuizComponentProps> = ({
       <Typography variant="h5" gutterBottom>
         Question {currentQuestion + 1} of {questions.length}
       </Typography>
-      
+
       <Typography variant="body1" gutterBottom>
         {questions[currentQuestion].question}
       </Typography>
@@ -162,15 +158,6 @@ const QuizComponent: React.FC<QuizComponentProps> = ({
           ))}
         </RadioGroup>
       </FormControl>
-
-      {showFeedback && (
-        <Alert 
-          severity={isCorrect ? "success" : "error"} 
-          style={{ margin: '1rem 0' }}
-        >
-          {isCorrect ? "Correct!" : "Incorrect"}
-        </Alert>
-      )}
 
       <Box display="flex" justifyContent="flex-end" mt={3}>
         <Button

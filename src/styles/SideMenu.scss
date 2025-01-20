@@ -91,6 +91,7 @@
     transform: translateX(-100%);
   }
 }
+
 .check-icon {
   margin-left: auto !important;
   color: #4caf50 !important;
@@ -101,7 +102,7 @@
     display: flex;
     align-items: center;
     padding-right: 16px;
-    
+
     .check-icon {
       opacity: 1;
       transition: opacity 0.3s ease;

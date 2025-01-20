@@ -88,7 +88,7 @@ const GuidePage: React.FC = () => {
     if (!selectedType) {
       return (
         <div className="welcome-page">
-          <Typography variant="h4">Welcome to the Guide</Typography>
+          <Typography variant="h4">Welcome to Digitinary Guide</Typography>
           <Typography>Select a guide from the left menu to get started.</Typography>
         </div>
       );

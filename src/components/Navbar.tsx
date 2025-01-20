@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/Navbar.scss';
-
+import digi from "./Digitinary-white.png"
 interface NavbarProps {
   onToggleSidebar: () => void;
   onLogoClick: () => void;
@@ -15,7 +15,7 @@ const Navbar: React.FC<NavbarProps> = ({ onToggleSidebar, onLogoClick }) => {
         <div className="bar"></div>
       </div>
       <div className="logo" onClick={onLogoClick}>
-        <img src="https://digitinary.com/wp-content/uploads/2024/04/Digitinary-Logo.png" alt="Logo" />
+        <img src={digi} alt="Logo" />
       </div>
     </div>
   );
