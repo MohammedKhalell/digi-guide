@@ -12,8 +12,8 @@ export const guides = [
   { name: 'Development', icon: <CodeIcon /> },
   { name: 'Finance & Administration', icon: <AttachMoneyIcon /> },
 ];
-export type GuideType = 'Front end' | 'Project Management' | 'UI/UX' | 'Development' | 'Finance & Administration';
 
+export type GuideType = 'Front end' | 'Project Management' | 'UI/UX' | 'Development' | 'Finance & Administration';
 
 export const menuItems = {
   'Front end': [
@@ -42,7 +42,7 @@ export const menuItems = {
 export interface StepperComponentProps {
   type: string;
   onNextGuide: () => void;
-  guideName: string | null | undefined; 
+  guideName: string | null | undefined;
 }
 
 export interface QuizComponentProps {
@@ -63,7 +63,8 @@ export const quizData: {
     options: string[];
     correctAnswer: string;
   }[];
-} = {  "Type 1.1": [
+} = {
+  "Type 1.1": [
     {
       question: "What is the main advantage of micro-frontend architecture?",
       options: [
@@ -116,6 +117,7 @@ export const quizData: {
     }
   ],
 };
+
 export const stepsData: {
   [key: string]: { title: string; description: string; image?: string }[];
 } = {
@@ -144,6 +146,7 @@ Learn more about Digitinary-UI at the following link:<br/>
   </div>
 </div>
       `,
+      image: "https://niteco.com/contentassets/b82d7fc4b71c43ad9da888cd772e33e1/imagemqs67.png",
     },
     {
       title: "Business Requirements",
@@ -199,6 +202,7 @@ The project has three deployment environments, each with specific purposes:<br/>
   </div>
 </div>
       `,
+      image: "https://ventor.tech/wp-content/uploads/2023/04/Screenshot-2023-04-19-at-01.30.03-1024x350.png",
     },
     {
       title: "Creating a Custom Module",
@@ -229,3 +233,12 @@ The project has three deployment environments, each with specific purposes:<br/>
     { title: "Step 1.2.4", description: "Description for Step 1.2.4" },
   ],
 };
+
+export interface SideMenuProps {
+  onSelectGuide: (guide: GuideType | null) => void;
+  onSelectType: (type: string) => void;
+  guides: { name: string; icon: JSX.Element }[];
+  selectedGuide: GuideType | null;
+  selectedType: string | null;
+  completedTypes: string[];
+}
